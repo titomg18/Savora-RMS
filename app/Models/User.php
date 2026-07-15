@@ -2,19 +2,48 @@
 
 namespace App\Models;
 
-use Database\Factories\UserFactory;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
-use Illuminate\Database\Eloquent\Attributes\Hidden;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-#[Fillable(['name', 'email', 'password', 'role'])]
-#[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
+    /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    /**
+     * Daftar role yang tersedia. Dipakai di form <select> dan validasi.
+     */
+    public const ROLES = ['admin', 'owner', 'cashier', 'waiter', 'chef'];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'password',
+        'role',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
     protected function casts(): array
     {
         return [
@@ -23,7 +52,6 @@ class User extends Authenticatable
         ];
     }
 
-    // Helper methods untuk pengecekan role (sesuai dengan 5 role)
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
@@ -49,7 +77,18 @@ class User extends Authenticatable
         return $this->role === 'chef';
     }
 
-    // Redirect berdasarkan role
+    /**
+     * Role yang boleh mengelola CRUD user lain lewat halaman admin.
+     * Sesuaikan kalau kamu mau role lain juga bisa akses.
+     */
+    public function canManageUsers(): bool
+    {
+        return in_array($this->role, ['admin', 'owner'], true);
+    }
+
+    /**
+     * Dipakai LoginController & route /dashboard untuk redirect sesuai role.
+     */
     public function getDashboardRoute(): string
     {
         return match ($this->role) {
@@ -58,7 +97,7 @@ class User extends Authenticatable
             'cashier' => route('cashier.dashboard'),
             'waiter'  => route('waiter.dashboard'),
             'chef'    => route('chef.dashboard'),
-            default   => route('dashboard'), // fallback jika ada role lain
+            default   => route('login'),
         };
     }
 }

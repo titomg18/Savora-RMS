@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Admin\UserController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -36,6 +37,14 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', function () {
         return redirect()->to(auth()->user()->getDashboardRoute());
     })->name('dashboard');
+
+    // ==== User management (CRUD) — hanya admin & owner ====
+    // Catatan: 'role:admin,owner' asumsinya middleware role kamu menerima
+    // beberapa role sekaligus (dipisah koma) sebagai parameter variadic.
+    // Kalau middleware kamu cuma menerima satu role, ganti jadi 'role:admin' saja.
+    Route::prefix('admin')->name('admin.')->middleware('role:admin,owner')->group(function () {
+        Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+    });
 });
 
 Route::get('/', function () {

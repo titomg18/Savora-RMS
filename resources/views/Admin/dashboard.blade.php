@@ -54,7 +54,7 @@
     ];
 
     $navItems = [
-        ['label' => 'Dashboard',   'active' => true],
+        ['label' => 'Dashboard',   'url' => route('dashboard'), 'active' => true],
         ['label' => 'Orders'],
         ['label' => 'Menu'],
         ['label' => 'Categories'],
@@ -63,7 +63,7 @@
         ['label' => 'Payments'],
         ['label' => 'Inventory'],
         ['label' => 'Reports'],
-        ['label' => 'Users'],
+        ['label' => 'Users', 'url' => route('admin.users.index')],
         ['label' => 'Settings'],
     ];
 @endphp
@@ -71,100 +71,16 @@
 <div class="min-h-screen flex">
 
     {{-- ===================== SIDEBAR ===================== --}}
-    <aside class="hidden lg:flex lg:flex-col w-64 shrink-0 bg-[#fdf2ee] border-r border-orange-100 px-5 py-6">
-        <a href="{{ route('dashboard') ?? '#' }}" class="flex items-center gap-2 px-2">
-            <span class="text-xl">🍴</span>
-            <div class="leading-tight">
-                <p class="font-extrabold text-[#d9603b] text-lg">Savora RMS</p>
-                <p class="text-xs text-neutral-500">Management Suite</p>
-            </div>
-        </a>
-
-        <nav class="mt-8 flex-1 space-y-1">
-            @foreach ($navItems as $item)
-                <a
-                    href="#"
-                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                        {{ $item['active'] ?? false
-                            ? 'bg-white text-[#d9603b] shadow-sm'
-                            : 'text-neutral-600 hover:bg-white/60' }}"
-                >
-                    <span class="w-5 h-5 flex items-center justify-center">
-                        {{-- simple dot as generic icon placeholder; swap with heroicons per item if you like --}}
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5"/>
-                            <rect x="14" y="3" width="7" height="7" rx="1.5"/>
-                            <rect x="3" y="14" width="7" height="7" rx="1.5"/>
-                            <rect x="14" y="14" width="7" height="7" rx="1.5"/>
-                        </svg>
-                    </span>
-                    {{ $item['label'] }}
-                </a>
-            @endforeach
-        </nav>
-
-        <form action="{{ route('logout') }}" method="POST" class="pt-4 border-t border-orange-100">
-            @csrf
-            <button type="submit" class="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium text-neutral-600 hover:bg-white/60 transition-colors">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
-                    <path d="M16 17l5-5-5-5"/>
-                    <path d="M21 12H9"/>
-                </svg>
-                Logout
-            </button>
-        </form>
-    </aside>
+    @include('admin.partials.sidebar', ['navItems' => $navItems])
 
     {{-- ===================== MAIN ===================== --}}
     <div class="flex-1 min-w-0">
 
         {{-- Header --}}
-        <header class="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between px-6 lg:px-10 py-6 bg-[#fdf2ee] border-b border-orange-100">
-            <div>
-                <h1 class="text-3xl font-extrabold">Overview</h1>
-                <p class="mt-1 text-sm text-neutral-600">
-                    Welcome back, {{ auth()->user()->name ?? 'Admin' }}. Here's what's happening today.
-                </p>
-            </div>
-
-            <div class="flex items-center gap-3">
-                <div class="relative hidden md:block">
-                    <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-neutral-400">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <circle cx="11" cy="11" r="7"/>
-                            <path d="m21 21-4.3-4.3"/>
-                        </svg>
-                    </span>
-                    <input
-                        type="text"
-                        placeholder="Search orders, items..."
-                        class="w-72 rounded-full border border-neutral-200 bg-white pl-10 pr-4 py-2.5 text-sm placeholder:text-neutral-400 focus:outline-none focus:ring-2 focus:ring-[#d9603b]/30"
-                    >
-                </div>
-
-                <button class="relative w-10 h-10 flex items-center justify-center rounded-full bg-white border border-neutral-200">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-neutral-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/>
-                        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>
-                    </svg>
-                </button>
-
-                <button class="hidden sm:inline-flex items-center gap-1.5 rounded-lg border border-[#d9603b] text-[#d9603b] px-4 py-2.5 text-sm font-semibold hover:bg-orange-50">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6l1 14a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-14"/>
-                    </svg>
-                    Add Menu
-                </button>
-
-                <button class="inline-flex items-center gap-1.5 rounded-lg bg-[#dd6b4a] hover:bg-[#c85a3b] text-white px-4 py-2.5 text-sm font-semibold">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 5v14M5 12h14"/>
-                    </svg>
-                    Create Order
-                </button>
-            </div>
-        </header>
+        @include('admin.partials.navbar', [
+            'pageTitle' => 'Overview',
+            'pageSubtitle' => "Welcome back, " . (auth()->user()->name ?? 'Admin') . ". Here's what's happening today.",
+        ])
 
         <main class="px-6 lg:px-10 py-8 space-y-8">
 
@@ -175,7 +91,7 @@
                     <div class="flex items-start justify-between">
                         <p class="text-xs font-semibold tracking-wide text-neutral-500 uppercase">Revenue Today</p>
                         <span class="w-9 h-9 rounded-full bg-orange-100 text-[#d9603b] flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <rect x="2" y="6" width="20" height="12" rx="2"/>
                                 <circle cx="12" cy="12" r="2.5"/>
                             </svg>
@@ -189,7 +105,7 @@
                     <div class="flex items-start justify-between">
                         <p class="text-xs font-semibold tracking-wide text-neutral-500 uppercase">Today's Orders</p>
                         <span class="w-9 h-9 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <rect x="4" y="3" width="16" height="18" rx="2"/>
                                 <path d="M8 7h8M8 11h8M8 15h5"/>
                             </svg>
@@ -203,7 +119,7 @@
                     <div class="flex items-start justify-between">
                         <p class="text-xs font-semibold tracking-wide text-neutral-500 uppercase">Active Tables</p>
                         <span class="w-9 h-9 rounded-full bg-orange-100 text-[#d9603b] flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <circle cx="9" cy="8" r="3"/>
                                 <path d="M2 21v-1a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5v1"/>
                                 <circle cx="18" cy="9" r="2.2"/>
@@ -224,7 +140,7 @@
                     <div class="flex items-start justify-between">
                         <p class="text-xs font-semibold tracking-wide text-neutral-500 uppercase">Available Tables</p>
                         <span class="w-9 h-9 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
                                 <path d="M3 10h18M5 10V6a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v4M5 10v10M19 10v10"/>
                             </svg>
                         </span>
