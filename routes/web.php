@@ -47,9 +47,13 @@ Route::middleware(['auth'])->group(function () {
     });
 });
 
+Route::resource('categories', CategoryController::class)
+    ->only(['index','store','edit','update','destroy']);
+
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
     }
-    return redirect()->route('login');
+
+    return view('auth.login');
 });
