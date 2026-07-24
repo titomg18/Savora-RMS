@@ -18,7 +18,7 @@
         ['label' => 'Dashboard', 'url' => route('dashboard')],
         ['label' => 'Orders'],
         ['label' => 'Menu'],
-        ['label' => 'Categories'],
+        ['label' => 'Categories', 'url' => route('admin.categories.index')],
         ['label' => 'Tables'],
         ['label' => 'Kitchen'],
         ['label' => 'Payments'],

@@ -9,7 +9,7 @@
         ['label' => 'Dashboard',   'url' => route('dashboard'), 'active' => true],
         ['label' => 'Orders'],
         ['label' => 'Menu'],
-        ['label' => 'Categories'],
+        ['label' => 'Categories', 'url' => \Illuminate\Support\Facades\Route::has('admin.categories.index') ? route('admin.categories.index') : '#'],
         ['label' => 'Tables'],
         ['label' => 'Kitchen'],
         ['label' => 'Payments'],
