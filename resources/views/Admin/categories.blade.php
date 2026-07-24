@@ -18,7 +18,7 @@
     $navItems = [
         ['label' => 'Dashboard',   'url' => route('dashboard')],
         ['label' => 'Orders'],
-        ['label' => 'Menu'],
+        ['label' => 'Menu', 'url' => route('admin.menu.index')],
         ['label' => 'Categories', 'url' => route('admin.categories.index'), 'active' => true],
         ['label' => 'Tables'],
         ['label' => 'Kitchen'],

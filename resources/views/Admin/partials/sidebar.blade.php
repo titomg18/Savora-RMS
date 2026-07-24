@@ -8,7 +8,7 @@
     $navItems = $navItems ?? [
         ['label' => 'Dashboard',   'url' => route('dashboard'), 'active' => true],
         ['label' => 'Orders'],
-        ['label' => 'Menu'],
+        ['label' => 'Menu', 'url' => \Illuminate\Support\Facades\Route::has('admin.menu.index') ? route('admin.menu.index') : '#'],
         ['label' => 'Categories', 'url' => \Illuminate\Support\Facades\Route::has('admin.categories.index') ? route('admin.categories.index') : '#'],
         ['label' => 'Tables'],
         ['label' => 'Kitchen'],
