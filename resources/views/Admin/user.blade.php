@@ -19,7 +19,7 @@
         ['label' => 'Orders'],
         ['label' => 'Menu', 'url' => route('admin.menu.index')],
         ['label' => 'Categories', 'url' => route('admin.categories.index')],
-        ['label' => 'Tables'],
+        ['label' => 'Tables', 'url' => route('admin.tables.index')],
         ['label' => 'Kitchen'],
         ['label' => 'Payments'],
         ['label' => 'Inventory'],

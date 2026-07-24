@@ -10,7 +10,7 @@
         ['label' => 'Orders'],
         ['label' => 'Menu', 'url' => \Illuminate\Support\Facades\Route::has('admin.menu.index') ? route('admin.menu.index') : '#'],
         ['label' => 'Categories', 'url' => \Illuminate\Support\Facades\Route::has('admin.categories.index') ? route('admin.categories.index') : '#'],
-        ['label' => 'Tables'],
+        ['label' => 'Tables', 'url' => \Illuminate\Support\Facades\Route::has('admin.tables.index') ? route('admin.tables.index') : '#'],
         ['label' => 'Kitchen'],
         ['label' => 'Payments'],
         ['label' => 'Inventory'],
