@@ -10,6 +10,7 @@ class MenuItem extends Model
     use HasFactory;
 
     public const STATUSES = ['active', 'inactive'];
+    public const STATIONS = ['grill', 'prep', 'other'];
 
     /**
      * The attributes that are mass assignable.
@@ -23,6 +24,7 @@ class MenuItem extends Model
         'price',
         'image',
         'status',
+        'station',
     ];
 
     protected $casts = [

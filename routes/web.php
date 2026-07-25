@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Admin\OrderController;
+use App\Http\Controllers\Admin\KitchenController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -52,6 +53,15 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('menu', MenuController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('tables', TableController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('orders', OrderController::class)->only(['index', 'store']);
+    });
+
+    // ==== Kitchen Display (KDS) — admin, owner, DAN chef ====
+    // Dipisah dari group di atas karena group itu di-lock 'role:admin,owner' saja;
+    // akses role di sini diatur lewat KitchenController::middleware() sendiri.
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('kitchen', [KitchenController::class, 'index'])->name('kitchen.index');
+        Route::post('kitchen/orders/{order}/advance', [KitchenController::class, 'advance'])->name('kitchen.advance');
+        Route::post('kitchen/items/{orderItem}/toggle', [KitchenController::class, 'toggleItem'])->name('kitchen.toggle_item');
     });
 });
 

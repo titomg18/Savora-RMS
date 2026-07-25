@@ -21,6 +21,14 @@ class OrderItem extends Model
         'unit_price',
         'quantity',
         'note',
+        'is_prepared',
+        'is_allergy',
+        'side',
+    ];
+
+    protected $casts = [
+        'is_prepared' => 'boolean',
+        'is_allergy' => 'boolean',
     ];
 
     public function order()

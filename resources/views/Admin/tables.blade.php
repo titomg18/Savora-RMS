@@ -21,7 +21,7 @@
         ['label' => 'Menu', 'url' => route('admin.menu.index')],
         ['label' => 'Categories', 'url' => route('admin.categories.index')],
         ['label' => 'Tables', 'url' => route('admin.tables.index'), 'active' => true],
-        ['label' => 'Kitchen'],
+        ['label' => 'Kitchen', 'url' => route('admin.kitchen.index')],
         ['label' => 'Payments'],
         ['label' => 'Inventory'],
         ['label' => 'Reports'],

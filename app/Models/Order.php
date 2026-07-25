@@ -10,6 +10,7 @@ class Order extends Model
     use HasFactory;
 
     public const STATUSES = ['held', 'submitted', 'completed', 'cancelled'];
+    public const KITCHEN_STATUSES = ['waiting', 'cooking', 'ready', 'served'];
 
     /**
      * The attributes that are mass assignable.
@@ -22,6 +23,7 @@ class Order extends Model
         'user_id',
         'guests',
         'status',
+        'kitchen_status',
         'subtotal',
         'tax',
         'total',
@@ -40,6 +42,16 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    /**
+     * Status berikutnya di alur dapur: waiting -> cooking -> ready -> served.
+     */
+    public function nextKitchenStatus(): ?string
+    {
+        $index = array_search($this->kitchen_status, self::KITCHEN_STATUSES, true);
+
+        return self::KITCHEN_STATUSES[$index + 1] ?? null;
     }
 
     /**

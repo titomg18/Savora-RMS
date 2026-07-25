@@ -7,11 +7,11 @@
 @php
     $navItems = $navItems ?? [
         ['label' => 'Dashboard',   'url' => route('dashboard'), 'active' => true],
-        ['label' => 'Orders'],
+        ['label' => 'Orders', 'url' => \Illuminate\Support\Facades\Route::has('admin.orders.index') ? route('admin.orders.index') : '#'],
         ['label' => 'Menu', 'url' => \Illuminate\Support\Facades\Route::has('admin.menu.index') ? route('admin.menu.index') : '#'],
         ['label' => 'Categories', 'url' => \Illuminate\Support\Facades\Route::has('admin.categories.index') ? route('admin.categories.index') : '#'],
         ['label' => 'Tables', 'url' => \Illuminate\Support\Facades\Route::has('admin.tables.index') ? route('admin.tables.index') : '#'],
-        ['label' => 'Kitchen'],
+        ['label' => 'Kitchen', 'url' => \Illuminate\Support\Facades\Route::has('admin.kitchen.index') ? route('admin.kitchen.index') : '#'],
         ['label' => 'Payments'],
         ['label' => 'Inventory'],
         ['label' => 'Reports'],
