@@ -17,7 +17,7 @@
     // $categories dikirim dari CategoryController@index (Eloquent collection).
     $navItems = [
         ['label' => 'Dashboard',   'url' => route('dashboard')],
-        ['label' => 'Orders'],
+        ['label' => 'Orders', 'url' => route('admin.orders.index')],
         ['label' => 'Menu', 'url' => route('admin.menu.index')],
         ['label' => 'Categories', 'url' => route('admin.categories.index'), 'active' => true],
         ['label' => 'Tables', 'url' => route('admin.tables.index')],
