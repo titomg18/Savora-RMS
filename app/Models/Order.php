@@ -11,6 +11,8 @@ class Order extends Model
 
     public const STATUSES = ['held', 'submitted', 'completed', 'cancelled'];
     public const KITCHEN_STATUSES = ['waiting', 'cooking', 'ready', 'served'];
+    public const PAYMENT_STATUSES = ['unpaid', 'paid'];
+    public const PAYMENT_METHODS = ['cash', 'card', 'qris', 'ewallet'];
 
     /**
      * The attributes that are mass assignable.
@@ -27,6 +29,15 @@ class Order extends Model
         'subtotal',
         'tax',
         'total',
+        'payment_status',
+        'payment_method',
+        'discount',
+        'promo_code',
+        'paid_at',
+    ];
+
+    protected $casts = [
+        'paid_at' => 'datetime',
     ];
 
     public function table()
@@ -52,6 +63,14 @@ class Order extends Model
         $index = array_search($this->kitchen_status, self::KITCHEN_STATUSES, true);
 
         return self::KITCHEN_STATUSES[$index + 1] ?? null;
+    }
+
+    /**
+     * Total yang harus dibayar setelah dikurangi diskon.
+     */
+    public function getAmountDueAttribute(): float
+    {
+        return round(($this->subtotal + $this->tax) - $this->discount, 2);
     }
 
     /**

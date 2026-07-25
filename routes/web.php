@@ -8,6 +8,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\TableController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\KitchenController;
+use App\Http\Controllers\Admin\PaymentController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -62,6 +63,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('kitchen', [KitchenController::class, 'index'])->name('kitchen.index');
         Route::post('kitchen/orders/{order}/advance', [KitchenController::class, 'advance'])->name('kitchen.advance');
         Route::post('kitchen/items/{orderItem}/toggle', [KitchenController::class, 'toggleItem'])->name('kitchen.toggle_item');
+    });
+
+    // ==== Payments — admin, owner, DAN cashier ====
+    // Sama seperti Kitchen: akses role diatur lewat PaymentController::middleware() sendiri.
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::get('payments', [PaymentController::class, 'index'])->name('payments.index');
+        Route::post('payments/{order}/apply-promo', [PaymentController::class, 'applyPromo'])->name('payments.apply_promo');
+        Route::post('payments/{order}/complete', [PaymentController::class, 'complete'])->name('payments.complete');
     });
 });
 
