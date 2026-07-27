@@ -23,7 +23,7 @@
         ['label' => 'Kitchen', 'url' => route('admin.kitchen.index')],
         ['label' => 'Payments', 'url' => route('admin.payments.index')],
         ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
-        ['label' => 'Reports'],
+        ['label' => 'Reports', 'url' => route('admin.reports.index')],
         ['label' => 'Users', 'url' => route('admin.users.index'), 'active' => true],
         ['label' => 'Settings'],
     ];

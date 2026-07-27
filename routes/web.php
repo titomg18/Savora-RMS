@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\KitchenController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\InventoryController;
+use App\Http\Controllers\Admin\ReportController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -56,6 +57,10 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('tables', TableController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('orders', OrderController::class)->only(['index', 'store']);
         Route::resource('inventory', InventoryController::class)->only(['index', 'store', 'update', 'destroy']);
+
+        Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
+        Route::get('reports/items', [ReportController::class, 'items'])->name('reports.items');
+        Route::get('reports/export', [ReportController::class, 'export'])->name('reports.export');
     });
 
     // ==== Kitchen Display (KDS) — admin, owner, DAN chef ====

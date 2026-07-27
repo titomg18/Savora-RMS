@@ -14,7 +14,7 @@
         ['label' => 'Kitchen', 'url' => \Illuminate\Support\Facades\Route::has('admin.kitchen.index') ? route('admin.kitchen.index') : '#'],
         ['label' => 'Payments', 'url' => \Illuminate\Support\Facades\Route::has('admin.payments.index') ? route('admin.payments.index') : '#'],
         ['label' => 'Inventory', 'url' => \Illuminate\Support\Facades\Route::has('admin.inventory.index') ? route('admin.inventory.index') : '#'],
-        ['label' => 'Reports'],
+        ['label' => 'Reports', 'url' => \Illuminate\Support\Facades\Route::has('admin.reports.index') ? route('admin.reports.index') : '#'],
         ['label' => 'Users', 'url' => route('admin.users.index')],
         ['label' => 'Settings'],
     ];
