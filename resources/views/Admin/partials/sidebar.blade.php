@@ -13,7 +13,7 @@
         ['label' => 'Tables', 'url' => \Illuminate\Support\Facades\Route::has('admin.tables.index') ? route('admin.tables.index') : '#'],
         ['label' => 'Kitchen', 'url' => \Illuminate\Support\Facades\Route::has('admin.kitchen.index') ? route('admin.kitchen.index') : '#'],
         ['label' => 'Payments', 'url' => \Illuminate\Support\Facades\Route::has('admin.payments.index') ? route('admin.payments.index') : '#'],
-        ['label' => 'Inventory'],
+        ['label' => 'Inventory', 'url' => \Illuminate\Support\Facades\Route::has('admin.inventory.index') ? route('admin.inventory.index') : '#'],
         ['label' => 'Reports'],
         ['label' => 'Users', 'url' => route('admin.users.index')],
         ['label' => 'Settings'],
