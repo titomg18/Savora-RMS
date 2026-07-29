@@ -16,7 +16,7 @@
         ['label' => 'Inventory', 'url' => \Illuminate\Support\Facades\Route::has('admin.inventory.index') ? route('admin.inventory.index') : '#'],
         ['label' => 'Reports', 'url' => \Illuminate\Support\Facades\Route::has('admin.reports.index') ? route('admin.reports.index') : '#'],
         ['label' => 'Users', 'url' => route('admin.users.index')],
-        ['label' => 'Settings'],
+        ['label' => 'Settings', 'url' => \Illuminate\Support\Facades\Route::has('admin.settings.edit') ? route('admin.settings.edit') : '#'],
     ];
 @endphp
 

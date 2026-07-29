@@ -25,7 +25,7 @@
         ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
         ['label' => 'Reports', 'url' => route('admin.reports.index')],
         ['label' => 'Users', 'url' => route('admin.users.index'), 'active' => true],
-        ['label' => 'Settings'],
+        ['label' => 'Settings', 'url' => route('admin.settings.edit')],
     ];
 
     $roleBadge = fn (string $role) => match ($role) {

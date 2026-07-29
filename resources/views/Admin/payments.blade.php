@@ -27,7 +27,7 @@
         ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
         ['label' => 'Reports', 'url' => route('admin.reports.index')],
         ['label' => 'Users', 'url' => route('admin.users.index')],
-        ['label' => 'Settings'],
+        ['label' => 'Settings', 'url' => route('admin.settings.edit')],
     ];
 
     $methodMeta = [
@@ -149,7 +149,7 @@
                                 <span>${{ number_format($order->subtotal, 2) }}</span>
                             </div>
                             <div class="flex justify-between text-neutral-600">
-                                <span>Tax (8.5%)</span>
+                                <span>Tax ({{ $order->subtotal > 0 ? rtrim(rtrim(number_format($order->tax / $order->subtotal * 100, 2), '0'), '.') : '0' }}%)</span>
                                 <span>${{ number_format($order->tax, 2) }}</span>
                             </div>
                             <div class="flex justify-between text-[#d9603b] font-semibold">

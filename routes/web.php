@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\KitchenController;
 use App\Http\Controllers\Admin\PaymentController;
 use App\Http\Controllers\Admin\InventoryController;
 use App\Http\Controllers\Admin\ReportController;
+use App\Http\Controllers\Admin\SettingController;
 
 Route::middleware('guest')->group(function () {
     Route::get('/login', [LoginController::class, 'index'])->name('login');
@@ -61,6 +62,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('reports/items', [ReportController::class, 'items'])->name('reports.items');
         Route::get('reports/export', [ReportController::class, 'export'])->name('reports.export');
+
+        Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit');
+        Route::post('settings/restaurant', [SettingController::class, 'updateRestaurant'])->name('settings.restaurant');
+        Route::post('settings/logo', [SettingController::class, 'updateLogo'])->name('settings.logo');
+        Route::post('settings/hours', [SettingController::class, 'updateHours'])->name('settings.hours');
+        Route::post('settings/tax', [SettingController::class, 'updateTax'])->name('settings.tax');
+        Route::post('settings/printer', [SettingController::class, 'updatePrinters'])->name('settings.printer');
+        Route::post('settings/password', [SettingController::class, 'updatePassword'])->name('settings.password');
     });
 
     // ==== Kitchen Display (KDS) — admin, owner, DAN chef ====

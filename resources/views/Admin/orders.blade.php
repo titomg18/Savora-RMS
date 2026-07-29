@@ -17,6 +17,7 @@
 
 @php
     // $categories, $menuItems, $tables dikirim dari OrderController@index.
+    $taxRate = (float) \App\Models\Setting::current()->tax_rate;
     $navItems = [
         ['label' => 'Dashboard',   'url' => route('dashboard')],
         ['label' => 'Orders', 'url' => route('admin.orders.index'), 'active' => true],
@@ -28,7 +29,7 @@
         ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
         ['label' => 'Reports', 'url' => route('admin.reports.index')],
         ['label' => 'Users', 'url' => route('admin.users.index')],
-        ['label' => 'Settings'],
+        ['label' => 'Settings', 'url' => route('admin.settings.edit')],
     ];
 @endphp
 
@@ -44,6 +45,7 @@
         ])) }},
         submitUrl: @js(route('admin.orders.store')),
         csrfToken: @js(csrf_token()),
+        taxRate: {{ $taxRate }},
     })"
     class="min-h-screen flex"
 >
@@ -235,7 +237,7 @@
                     <span x-text="'$' + subtotal.toFixed(2)"></span>
                 </div>
                 <div class="flex justify-between text-neutral-600">
-                    <span>Tax (8.5%)</span>
+                    <span>Tax ({{ rtrim(rtrim(number_format($taxRate, 2), '0'), '.') }}%)</span>
                     <span x-text="'$' + tax.toFixed(2)"></span>
                 </div>
                 <div class="flex justify-between text-lg font-extrabold pt-1.5">
@@ -276,11 +278,12 @@
 </div>
 
 <script>
-    function orderBuilder({ menuItems, submitUrl, csrfToken }) {
+    function orderBuilder({ menuItems, submitUrl, csrfToken, taxRate }) {
         return {
             menuItems,
             submitUrl,
             csrfToken,
+            taxRate: taxRate / 100, // mis. 8.5 -> 0.085
             tableId: '',
             guests: 2,
             search: '',
@@ -302,7 +305,7 @@
             },
 
             get tax() {
-                return Math.round(this.subtotal * 0.085 * 100) / 100;
+                return Math.round(this.subtotal * this.taxRate * 100) / 100;
             },
 
             get total() {
