@@ -304,7 +304,7 @@
         if (mode === 'edit') {
             title.textContent = 'Edit Menu Item';
             form.action = `${menuIndexUrl}/${id}`;
-            methodField.innerHTML = '@method('PUT')';
+            methodField.innerHTML = '<input type="hidden" name="_method" value="PUT">';
             currentImage.textContent = data.image_url ? 'Leave empty to keep the current photo.' : '';
         } else {
             title.textContent = 'Add New Item';
