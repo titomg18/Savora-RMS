@@ -15,19 +15,6 @@
 
 @php
     // $tables (koleksi DiningTable untuk area terpilih) & $area dikirim dari TableController@index.
-    $navItems = [
-        ['label' => 'Dashboard',   'url' => route('dashboard')],
-        ['label' => 'Orders', 'url' => route('admin.orders.index')],
-        ['label' => 'Menu', 'url' => route('admin.menu.index')],
-        ['label' => 'Categories', 'url' => route('admin.categories.index')],
-        ['label' => 'Tables', 'url' => route('admin.tables.index'), 'active' => true],
-        ['label' => 'Kitchen', 'url' => route('admin.kitchen.index')],
-        ['label' => 'Payments', 'url' => route('admin.payments.index')],
-        ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
-        ['label' => 'Reports', 'url' => route('admin.reports.index')],
-        ['label' => 'Users', 'url' => route('admin.users.index')],
-        ['label' => 'Settings', 'url' => route('admin.settings.edit')],
-    ];
 
     $statusStyles = [
         'available' => ['dot' => 'bg-teal-400',  'card' => 'bg-white border-neutral-200'],
@@ -39,7 +26,7 @@
 <div class="min-h-screen flex">
 
     {{-- ===================== SIDEBAR ===================== --}}
-    @include('admin.partials.sidebar', ['navItems' => $navItems])
+    @include('admin.partials.sidebar')
 
     {{-- ===================== MAIN ===================== --}}
     <div class="flex-1 min-w-0">

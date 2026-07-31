@@ -1,27 +1,34 @@
 {{--
-    Sidebar partial.
-    $navItems bisa dikirim dari view pemanggil; kalau tidak dikirim, pakai default di bawah.
-    Untuk menandai menu aktif secara otomatis, kamu bisa ganti 'active' => true
-    dengan request()->routeIs('admin.dashboard') dsb.
+    Sidebar partial — SATU-SATUNYA sumber daftar menu untuk semua halaman Admin.
+
+    Sengaja TIDAK menerima $navItems dari luar lagi (biar gak ada lagi daftar menu
+    yang beda-beda/ketinggalan di tiap halaman). Kalau nambah menu baru, cukup edit
+    array $navItems di bawah ini SEKALI SAJA, otomatis kepakai di semua halaman yang
+    meng-include partial ini.
+
+    Status aktif dideteksi otomatis lewat request()->routeIs(), bukan di-hardcode,
+    jadi gak akan ada lagi menu yang "nyangkut" aktif di halaman yang salah.
 --}}
 @php
-    $navItems = $navItems ?? [
-        ['label' => 'Dashboard',   'url' => route('dashboard'), 'active' => true],
-        ['label' => 'Orders', 'url' => \Illuminate\Support\Facades\Route::has('admin.orders.index') ? route('admin.orders.index') : '#'],
-        ['label' => 'Menu', 'url' => \Illuminate\Support\Facades\Route::has('admin.menu.index') ? route('admin.menu.index') : '#'],
-        ['label' => 'Categories', 'url' => \Illuminate\Support\Facades\Route::has('admin.categories.index') ? route('admin.categories.index') : '#'],
-        ['label' => 'Tables', 'url' => \Illuminate\Support\Facades\Route::has('admin.tables.index') ? route('admin.tables.index') : '#'],
-        ['label' => 'Kitchen', 'url' => \Illuminate\Support\Facades\Route::has('admin.kitchen.index') ? route('admin.kitchen.index') : '#'],
-        ['label' => 'Payments', 'url' => \Illuminate\Support\Facades\Route::has('admin.payments.index') ? route('admin.payments.index') : '#'],
-        ['label' => 'Inventory', 'url' => \Illuminate\Support\Facades\Route::has('admin.inventory.index') ? route('admin.inventory.index') : '#'],
-        ['label' => 'Reports', 'url' => \Illuminate\Support\Facades\Route::has('admin.reports.index') ? route('admin.reports.index') : '#'],
-        ['label' => 'Users', 'url' => route('admin.users.index')],
-        ['label' => 'Settings', 'url' => \Illuminate\Support\Facades\Route::has('admin.settings.edit') ? route('admin.settings.edit') : '#'],
+    use Illuminate\Support\Facades\Route;
+
+    $navItems = [
+        ['label' => 'Dashboard',  'route' => 'dashboard',              'active_pattern' => ['dashboard', 'admin.dashboard']],
+        ['label' => 'Orders',     'route' => 'admin.orders.index',     'active_pattern' => 'admin.orders.*'],
+        ['label' => 'Menu',       'route' => 'admin.menu.index',       'active_pattern' => 'admin.menu.*'],
+        ['label' => 'Categories', 'route' => 'admin.categories.index', 'active_pattern' => 'admin.categories.*'],
+        ['label' => 'Tables',     'route' => 'admin.tables.index',     'active_pattern' => 'admin.tables.*'],
+        ['label' => 'Kitchen',    'route' => 'admin.kitchen.index',    'active_pattern' => 'admin.kitchen.*'],
+        ['label' => 'Payments',   'route' => 'admin.payments.index',   'active_pattern' => 'admin.payments.*'],
+        ['label' => 'Inventory',  'route' => 'admin.inventory.index',  'active_pattern' => 'admin.inventory.*'],
+        ['label' => 'Reports',    'route' => 'admin.reports.index',    'active_pattern' => 'admin.reports.*'],
+        ['label' => 'Users',      'route' => 'admin.users.index',      'active_pattern' => 'admin.users.*'],
+        ['label' => 'Settings',   'route' => 'admin.settings.edit',    'active_pattern' => 'admin.settings.*'],
     ];
 @endphp
 
 <aside class="hidden lg:flex lg:flex-col w-64 shrink-0 bg-[#fdf2ee] border-r border-orange-100 px-5 py-6">
-    <a href="{{ route('dashboard') ?? '#' }}" class="flex items-center gap-2 px-2">
+    <a href="{{ route('dashboard') }}" class="flex items-center gap-2 px-2">
         <span class="text-xl">🍴</span>
         <div class="leading-tight">
             <p class="font-extrabold text-[#d9603b] text-lg">Savora RMS</p>
@@ -31,10 +38,14 @@
 
     <nav class="mt-8 flex-1 space-y-1">
         @foreach ($navItems as $item)
+            @php
+                $url = Route::has($item['route']) ? route($item['route']) : '#';
+                $isActive = request()->routeIs($item['active_pattern']);
+            @endphp
             <a
-                href="{{ $item['url'] ?? '#' }}"
+                href="{{ $url }}"
                 class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors
-                    {{ $item['active'] ?? false
+                    {{ $isActive
                         ? 'bg-white text-[#d9603b] shadow-sm'
                         : 'text-neutral-600 hover:bg-white/60' }}"
             >

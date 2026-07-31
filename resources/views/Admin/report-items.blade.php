@@ -13,24 +13,8 @@
 </head>
 <body class="bg-[#fdf2ee] text-neutral-900">
 
-@php
-    $navItems = [
-        ['label' => 'Dashboard',   'url' => route('dashboard')],
-        ['label' => 'Orders', 'url' => route('admin.orders.index')],
-        ['label' => 'Menu', 'url' => route('admin.menu.index')],
-        ['label' => 'Categories', 'url' => route('admin.categories.index')],
-        ['label' => 'Tables', 'url' => route('admin.tables.index')],
-        ['label' => 'Kitchen', 'url' => route('admin.kitchen.index')],
-        ['label' => 'Payments', 'url' => route('admin.payments.index')],
-        ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
-        ['label' => 'Reports', 'url' => route('admin.reports.index'), 'active' => true],
-        ['label' => 'Users', 'url' => route('admin.users.index')],
-        ['label' => 'Settings', 'url' => route('admin.settings.edit')],
-    ];
-@endphp
-
 <div class="min-h-screen flex">
-    @include('admin.partials.sidebar', ['navItems' => $navItems])
+    @include('admin.partials.sidebar')
 
     <div class="flex-1 min-w-0">
         <main class="px-6 lg:px-10 py-8">

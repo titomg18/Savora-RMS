@@ -14,19 +14,6 @@
 <body class="bg-[#f6f4f2] text-neutral-900">
 
 @php
-    $navItems = [
-        ['label' => 'Dashboard', 'url' => route('dashboard')],
-        ['label' => 'Orders', 'url' => route('admin.orders.index')],
-        ['label' => 'Menu', 'url' => route('admin.menu.index')],
-        ['label' => 'Categories', 'url' => route('admin.categories.index')],
-        ['label' => 'Tables', 'url' => route('admin.tables.index')],
-        ['label' => 'Kitchen', 'url' => route('admin.kitchen.index')],
-        ['label' => 'Payments', 'url' => route('admin.payments.index')],
-        ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
-        ['label' => 'Reports', 'url' => route('admin.reports.index')],
-        ['label' => 'Users', 'url' => route('admin.users.index'), 'active' => true],
-        ['label' => 'Settings', 'url' => route('admin.settings.edit')],
-    ];
 
     $roleBadge = fn (string $role) => match ($role) {
         'admin'   => 'bg-orange-100 text-[#c0451f]',
@@ -40,7 +27,7 @@
 
 <div class="min-h-screen flex">
 
-    @include('admin.partials.sidebar', ['navItems' => $navItems])
+    @include('admin.partials.sidebar')
 
     <div class="flex-1 min-w-0">
 

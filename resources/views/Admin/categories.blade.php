@@ -13,27 +13,10 @@
 </head>
 <body class="bg-[#f6f4f2] text-neutral-900">
 
-@php
-    // $categories dikirim dari CategoryController@index (Eloquent collection).
-    $navItems = [
-        ['label' => 'Dashboard',   'url' => route('dashboard')],
-        ['label' => 'Orders', 'url' => route('admin.orders.index')],
-        ['label' => 'Menu', 'url' => route('admin.menu.index')],
-        ['label' => 'Categories', 'url' => route('admin.categories.index'), 'active' => true],
-        ['label' => 'Tables', 'url' => route('admin.tables.index')],
-        ['label' => 'Kitchen', 'url' => route('admin.kitchen.index')],
-        ['label' => 'Payments', 'url' => route('admin.payments.index')],
-        ['label' => 'Inventory', 'url' => route('admin.inventory.index')],
-        ['label' => 'Reports', 'url' => route('admin.reports.index')],
-        ['label' => 'Users', 'url' => route('admin.users.index')],
-        ['label' => 'Settings', 'url' => route('admin.settings.edit')],
-    ];
-@endphp
-
 <div class="min-h-screen flex">
 
     {{-- ===================== SIDEBAR ===================== --}}
-    @include('admin.partials.sidebar', ['navItems' => $navItems])
+    @include('admin.partials.sidebar')
 
     {{-- ===================== MAIN ===================== --}}
     <div class="flex-1 min-w-0">
