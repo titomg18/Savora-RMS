@@ -158,15 +158,16 @@
                                         <div class="flex items-center justify-end gap-2">
                                             <button
                                                 type="button"
-                                                onclick='openMenuModal("edit", {{ $item->id }}, {{ Illuminate\Support\Js::from([
-                                                    "category_id" => $item->category_id,
-                                                    "name" => $item->name,
-                                                    "description" => $item->description,
-                                                    "price" => $item->price,
-                                                    "status" => $item->status,
-                                                    "image_url" => $item->image_url,
-                                                ]) }})'
-                                                class="inline-flex items-center justify-center rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 w-9 h-9"
+                                                class="js-edit-menu-item inline-flex items-center justify-center rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 w-9 h-9"
+                                                data-id="{{ $item->id }}"
+                                                data-item="{{ json_encode([
+                                                    'category_id' => $item->category_id,
+                                                    'name' => $item->name,
+                                                    'description' => $item->description,
+                                                    'price' => $item->price,
+                                                    'status' => $item->status,
+                                                    'image_url' => $item->image_url,
+                                                ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_TAG) }}"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <path d="M12 20h9"/>
@@ -304,7 +305,7 @@
         if (mode === 'edit') {
             title.textContent = 'Edit Menu Item';
             form.action = `${menuIndexUrl}/${id}`;
-            methodField.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+            methodField.innerHTML = '@method('PUT')';
             currentImage.textContent = data.image_url ? 'Leave empty to keep the current photo.' : '';
         } else {
             title.textContent = 'Add New Item';
@@ -319,6 +320,13 @@
     function closeMenuModal() {
         document.getElementById('menuModal').classList.add('hidden');
     }
+
+    document.querySelectorAll('.js-edit-menu-item').forEach((button) => {
+        button.addEventListener('click', () => {
+            const data = JSON.parse(button.dataset.item);
+            openMenuModal('edit', button.dataset.id, data);
+        });
+    });
 
     @if ($errors->any())
         openMenuModal('create');

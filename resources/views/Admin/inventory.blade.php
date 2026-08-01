@@ -179,14 +179,15 @@
                                         <div class="flex items-center justify-end gap-2">
                                             <button
                                                 type="button"
-                                                onclick='openInventoryModal("edit", {{ $item->id }}, {{ Illuminate\Support\Js::from([
-                                                    "name" => $item->name,
-                                                    "category" => $item->category,
-                                                    "unit" => $item->unit,
-                                                    "current_stock" => (float) $item->current_stock,
-                                                    "minimum_stock" => (float) $item->minimum_stock,
-                                                ]) }})'
-                                                class="inline-flex items-center justify-center rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 w-9 h-9"
+                                                class="js-edit-inventory-item inline-flex items-center justify-center rounded-lg bg-neutral-100 hover:bg-neutral-200 text-neutral-700 w-9 h-9"
+                                                data-id="{{ $item->id }}"
+                                                data-item="{{ json_encode([
+                                                    'name' => $item->name,
+                                                    'category' => $item->category,
+                                                    'unit' => $item->unit,
+                                                    'current_stock' => (float) $item->current_stock,
+                                                    'minimum_stock' => (float) $item->minimum_stock,
+                                                ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_TAG) }}"
                                             >
                                                 <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                     <path d="M12 20h9"/>
@@ -331,6 +332,13 @@
     function closeInventoryModal() {
         document.getElementById('inventoryModal').classList.add('hidden');
     }
+
+    document.querySelectorAll('.js-edit-inventory-item').forEach((button) => {
+        button.addEventListener('click', () => {
+            const data = JSON.parse(button.dataset.item);
+            openInventoryModal('edit', button.dataset.id, data);
+        });
+    });
 
     @if ($errors->any())
         openInventoryModal('create');

@@ -89,15 +89,16 @@
                     @php $style = $statusStyles[$table->status]; @endphp
                     <button
                         type="button"
-                        onclick='openTableModal({{ $table->id }}, {{ Illuminate\Support\Js::from([
-                            "number" => $table->number,
-                            "seats" => $table->seats,
-                            "area" => $table->area,
-                            "status" => $table->status,
-                            "label" => $table->label,
-                            "subtitle" => $table->subtitle,
-                        ]) }})'
-                        class="relative text-left rounded-2xl border {{ $style['card'] }} p-5 hover:shadow-md transition-shadow"
+                        class="js-edit-table relative text-left rounded-2xl border {{ $style['card'] }} p-5 hover:shadow-md transition-shadow"
+                        data-id="{{ $table->id }}"
+                        data-item="{{ json_encode([
+                            'number' => $table->number,
+                            'seats' => $table->seats,
+                            'area' => $table->area,
+                            'status' => $table->status,
+                            'label' => $table->label,
+                            'subtitle' => $table->subtitle,
+                        ], JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP | JSON_HEX_TAG) }}"
                     >
                         <span class="absolute top-4 right-4 w-2.5 h-2.5 rounded-full {{ $style['dot'] }}"></span>
 
@@ -283,6 +284,13 @@
             document.getElementById('tableDeleteForm').submit();
         }
     }
+
+    document.querySelectorAll('.js-edit-table').forEach((button) => {
+        button.addEventListener('click', () => {
+            const data = JSON.parse(button.dataset.item);
+            openTableModal(button.dataset.id, data);
+        });
+    });
 
     @if ($errors->any())
         openTableModal(null, {{ Illuminate\Support\Js::from(old()) }});
