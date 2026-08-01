@@ -54,10 +54,14 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('admin')->name('admin.')->middleware('role:admin,owner')->group(function () {
         Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
-        Route::resource('menu', MenuController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::resource('menu', MenuController::class)
+            ->parameters(['menu' => 'menuItem'])
+            ->only(['index', 'store', 'update', 'destroy']);
         Route::resource('tables', TableController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('orders', OrderController::class)->only(['index', 'store']);
-        Route::resource('inventory', InventoryController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::resource('inventory', InventoryController::class)
+            ->parameters(['inventory' => 'inventoryItem'])
+            ->only(['index', 'store', 'update', 'destroy']);
 
         Route::get('reports', [ReportController::class, 'index'])->name('reports.index');
         Route::get('reports/items', [ReportController::class, 'items'])->name('reports.items');
