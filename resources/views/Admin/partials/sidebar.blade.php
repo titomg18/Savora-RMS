@@ -17,7 +17,7 @@
     // daftar ini cuma disamakan manual biar gak ada menu yang kelihatan tapi ternyata 403.
     $navItems = [
         ['label' => 'Dashboard',  'route' => 'dashboard',              'active_pattern' => ['dashboard', 'admin.dashboard'], 'roles' => ['admin', 'owner', 'cashier', 'waiter', 'chef']],
-        ['label' => 'Orders',     'route' => 'admin.orders.index',     'active_pattern' => 'admin.orders.*',     'roles' => ['admin', 'owner', 'waiter']],
+        ['label' => 'Orders',     'route' => 'admin.orders.index',     'active_pattern' => 'admin.orders.*',     'roles' => ['admin', 'owner', 'waiter', 'cashier']],
         ['label' => 'Menu',       'route' => 'admin.menu.index',       'active_pattern' => 'admin.menu.*',       'roles' => ['admin', 'owner']],
         ['label' => 'Categories', 'route' => 'admin.categories.index', 'active_pattern' => 'admin.categories.*', 'roles' => ['admin', 'owner']],
         ['label' => 'Tables',     'route' => 'admin.tables.index',     'active_pattern' => 'admin.tables.*',     'roles' => ['admin', 'owner', 'waiter']],

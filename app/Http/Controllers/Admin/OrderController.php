@@ -23,7 +23,7 @@ class OrderController extends Controller implements HasMiddleware
     {
         return [
             'auth',
-            new Middleware('role:admin,owner,waiter'),
+            new Middleware('role:admin,owner,waiter,cashier'),
         ];
     }
 

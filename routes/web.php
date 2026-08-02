@@ -27,10 +27,6 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.dashboard');
     })->middleware('role:admin,owner')->name('admin.dashboard');
 
-    Route::get('/cashier/dashboard', function () {
-        return view('cashier.dashboard');
-    })->middleware('role:cashier')->name('cashier.dashboard');
-
     Route::get('/chef/dashboard', function () {
         return view('chef.dashboard');
     })->middleware('role:chef')->name('chef.dashboard');
