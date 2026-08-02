@@ -22,7 +22,8 @@
         ['label' => 'Payments',   'route' => 'admin.payments.index',   'active_pattern' => 'admin.payments.*'],
         ['label' => 'Inventory',  'route' => 'admin.inventory.index',  'active_pattern' => 'admin.inventory.*'],
         ['label' => 'Reports',    'route' => 'admin.reports.index',    'active_pattern' => 'admin.reports.*'],
-        ['label' => 'Users',      'route' => 'admin.users.index',      'active_pattern' => 'admin.users.*'],
+        // Sengaja cuma kelihatan buat role 'admin' — Owner dkk gak dikasih akses kelola akun staff.
+        ['label' => 'Users',      'route' => 'admin.users.index',      'active_pattern' => 'admin.users.*', 'visible' => auth()->user()?->canManageUsers() ?? false],
         ['label' => 'Settings',   'route' => 'admin.settings.edit',    'active_pattern' => 'admin.settings.*'],
     ];
 @endphp
@@ -38,6 +39,7 @@
 
     <nav class="mt-8 flex-1 space-y-1">
         @foreach ($navItems as $item)
+            @continue(! ($item['visible'] ?? true))
             @php
                 $url = Route::has($item['route']) ? route($item['route']) : '#';
                 $isActive = request()->routeIs($item['active_pattern']);

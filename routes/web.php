@@ -25,11 +25,7 @@ Route::post('/logout', [LoginController::class, 'logout'])
 Route::middleware(['auth'])->group(function () {
     Route::get('/admin/dashboard', function () {
         return view('admin.dashboard');
-    })->middleware('role:admin')->name('admin.dashboard');
-
-    Route::get('/owner/dashboard', function () {
-        return view('owner.dashboard');
-    })->middleware('role:owner')->name('owner.dashboard');
+    })->middleware('role:admin,owner')->name('admin.dashboard');
 
     Route::get('/cashier/dashboard', function () {
         return view('cashier.dashboard');
@@ -51,8 +47,13 @@ Route::middleware(['auth'])->group(function () {
     // Catatan: 'role:admin,owner' asumsinya middleware role kamu menerima
     // beberapa role sekaligus (dipisah koma) sebagai parameter variadic.
     // Kalau middleware kamu cuma menerima satu role, ganti jadi 'role:admin' saja.
-    Route::prefix('admin')->name('admin.')->middleware('role:admin,owner')->group(function () {
+
+    // ==== Users (kelola akun staff) — KHUSUS role 'admin', Owner sengaja TIDAK dikasih akses ke sini ====
+    Route::prefix('admin')->name('admin.')->middleware('role:admin')->group(function () {
         Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
+    });
+
+    Route::prefix('admin')->name('admin.')->middleware('role:admin,owner')->group(function () {
         Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('menu', MenuController::class)
             ->parameters(['menu' => 'menuItem'])

@@ -83,7 +83,9 @@ class User extends Authenticatable
      */
     public function canManageUsers(): bool
     {
-        return in_array($this->role, ['admin', 'owner'], true);
+        // Sengaja cuma 'admin' — Owner boleh akses semua halaman lain, tapi TIDAK
+        // untuk kelola akun staff (Users). Ini konsisten dengan middleware di routes/web.php.
+        return $this->role === 'admin';
     }
 
     /**
@@ -92,8 +94,8 @@ class User extends Authenticatable
     public function getDashboardRoute(): string
     {
         return match ($this->role) {
-            'admin'   => route('admin.dashboard'),
-            'owner'   => route('owner.dashboard'),
+            // Owner pakai tampilan & akses yang SAMA PERSIS dengan Admin — gak ada view/folder terpisah.
+            'admin', 'owner' => route('admin.dashboard'),
             'cashier' => route('cashier.dashboard'),
             'waiter'  => route('waiter.dashboard'),
             'chef'    => route('chef.dashboard'),
