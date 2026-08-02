@@ -80,6 +80,17 @@
                 </svg>
                 Station View
             </button>
+
+            <form action="{{ route('logout') }}" method="POST">
+                @csrf
+                <button type="submit" title="Logout" class="inline-flex items-center justify-center w-9 h-9 rounded-full border border-neutral-200 text-neutral-500 hover:text-red-600 hover:border-red-200 hover:bg-red-50">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                        <path d="M16 17l5-5-5-5"/>
+                        <path d="M21 12H9"/>
+                    </svg>
+                </button>
+            </form>
         </div>
     </header>
 

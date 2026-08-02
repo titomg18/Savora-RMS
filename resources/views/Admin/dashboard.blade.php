@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
     </style>
@@ -27,6 +28,9 @@
     $tableCapacity  = $tableCapacity  ?? 75;
     $availableTables = $availableTables ?? 6;
     $totalTables    = $totalTables    ?? 8;
+    $activeKitchenCount = $activeKitchenCount ?? 6;
+    $weeklyRevenue = $weeklyRevenue ?? collect(['Mon','Tue','Wed','Thu','Fri','Sat','Sun'])
+        ->map(fn ($day) => ['label' => $day, 'value' => rand(1800, 4800)]);
 
     $kitchenTickets = $kitchenTickets ?? [
         ['id' => '#1042', 'place' => 'Table 4', 'time' => '24m', 'urgency' => 'high', 'items' => [
@@ -85,7 +89,9 @@
                         </span>
                     </div>
                     <p class="mt-2 text-3xl font-extrabold">${{ number_format($revenueToday, 2) }}</p>
-                    <p class="mt-3 text-sm text-emerald-600 font-medium">↗ {{ $revenueDelta }}% <span class="text-neutral-400 font-normal">vs yesterday</span></p>
+                    <p class="mt-3 text-sm font-medium {{ $revenueDelta < 0 ? 'text-red-500' : 'text-emerald-600' }}">
+                        {{ $revenueDelta < 0 ? '↘' : '↗' }} {{ abs($revenueDelta) }}% <span class="text-neutral-400 font-normal">vs yesterday</span>
+                    </p>
                 </div>
 
                 <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm p-5">
@@ -99,7 +105,9 @@
                         </span>
                     </div>
                     <p class="mt-2 text-3xl font-extrabold">{{ $todaysOrders }}</p>
-                    <p class="mt-3 text-sm text-emerald-600 font-medium">↗ {{ $ordersDelta }}% <span class="text-neutral-400 font-normal">vs yesterday</span></p>
+                    <p class="mt-3 text-sm font-medium {{ $ordersDelta < 0 ? 'text-red-500' : 'text-emerald-600' }}">
+                        {{ $ordersDelta < 0 ? '↘' : '↗' }} {{ abs($ordersDelta) }}% <span class="text-neutral-400 font-normal">vs yesterday</span>
+                    </p>
                 </div>
 
                 <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm p-5">
@@ -154,35 +162,8 @@
                         </div>
                     </div>
 
-                    <div class="mt-6 overflow-x-auto">
-                        <svg viewBox="0 0 760 340" class="w-full min-w-[600px] h-72">
-                            <defs>
-                                <linearGradient id="areaFill" x1="0" y1="0" x2="0" y2="1">
-                                    <stop offset="0%" stop-color="#dd6b4a" stop-opacity="0.35"/>
-                                    <stop offset="100%" stop-color="#dd6b4a" stop-opacity="0"/>
-                                </linearGradient>
-                            </defs>
-
-                            {{-- gridlines --}}
-                            @foreach ([0, 1, 2, 3, 4, 5] as $i)
-                                <line x1="40" x2="740" y1="{{ 20 + $i * 52 }}" y2="{{ 20 + $i * 52 }}" stroke="#f1e7e2" stroke-width="1"/>
-                                <text x="10" y="{{ 24 + $i * 52 }}" font-size="12" fill="#9c9c9c">${{ 5 - $i }}k</text>
-                            @endforeach
-
-                            {{-- area + line (hand-tuned curve resembling the mockup) --}}
-                            <path d="M40,230 C110,260 140,300 190,300 C240,300 260,180 320,150 C370,125 400,220 450,215 C500,210 520,170 570,175 C620,180 650,110 730,60 L730,280 L40,280 Z" fill="url(#areaFill)"/>
-                            <path d="M40,230 C110,260 140,300 190,300 C240,300 260,180 320,150 C370,125 400,220 450,215 C500,210 520,170 570,175 C620,180 650,110 730,60" fill="none" stroke="#c0451f" stroke-width="3" stroke-linecap="round"/>
-
-                            {{-- markers --}}
-                            @foreach ([[190,300],[320,150],[450,215],[570,175],[730,60]] as $pt)
-                                <circle cx="{{ $pt[0] }}" cy="{{ $pt[1] }}" r="7" fill="white" stroke="#c0451f" stroke-width="3"/>
-                            @endforeach
-
-                            {{-- x labels --}}
-                            @foreach (['Mon','Tue','Wed','Thu','Fri','Sat','Sun'] as $i => $day)
-                                <text x="{{ 40 + $i * 115 }}" y="310" font-size="12" fill="#8a8a8a">{{ $day }}</text>
-                            @endforeach
-                        </svg>
+                    <div class="mt-6">
+                        <canvas id="revenueTrendChart" height="280"></canvas>
                     </div>
                 </div>
 
@@ -193,12 +174,12 @@
                             <span>🔥</span> Kitchen Live
                         </h2>
                         <span class="text-xs font-semibold bg-orange-100 text-[#c0451f] px-2.5 py-1 rounded-full">
-                            {{ count($kitchenTickets) * 2 + 2 }} Active
+                            {{ $activeKitchenCount }} Active
                         </span>
                     </div>
 
                     <div class="mt-5 space-y-4">
-                        @foreach ($kitchenTickets as $ticket)
+                        @forelse ($kitchenTickets as $ticket)
                             @php
                                 $borderColor = match($ticket['urgency']) {
                                     'high' => 'border-l-red-500',
@@ -229,12 +210,14 @@
                                     @endforeach
                                 </ul>
                             </div>
-                        @endforeach
+                        @empty
+                            <p class="text-sm text-neutral-400 text-center py-6">Gak ada order aktif di dapur saat ini. 🎉</p>
+                        @endforelse
                     </div>
 
-                    <button class="mt-5 w-full rounded-lg border border-neutral-200 py-2.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50">
+                    <a href="{{ route('admin.kitchen.index') }}" class="mt-5 block w-full rounded-lg border border-neutral-200 py-2.5 text-sm font-semibold text-neutral-700 hover:bg-neutral-50 text-center">
                         View All Tickets
-                    </button>
+                    </a>
                 </div>
             </div>
 
@@ -244,26 +227,37 @@
                 <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6">
                     <h2 class="text-xl font-extrabold">Popular Today</h2>
                     <div class="mt-5 space-y-4">
-                        @foreach ($popularToday as $dish)
+                        @forelse ($popularToday as $dish)
                             <div class="flex items-center gap-4">
-                                <img src="{{ $dish['image'] }}" alt="{{ $dish['name'] }}" class="w-14 h-14 rounded-xl object-cover">
+                                @if ($dish['image'])
+                                    <img src="{{ $dish['image'] }}" alt="{{ $dish['name'] }}" class="w-14 h-14 rounded-xl object-cover shrink-0">
+                                @else
+                                    <div class="w-14 h-14 rounded-xl bg-neutral-100 flex items-center justify-center shrink-0 text-neutral-300">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                            <rect x="3" y="3" width="18" height="18" rx="2"/>
+                                            <circle cx="9" cy="9" r="2"/>
+                                            <path d="m21 15-5-5L5 21"/>
+                                        </svg>
+                                    </div>
+                                @endif
                                 <div class="flex-1 min-w-0">
                                     <p class="font-semibold text-neutral-900">{{ $dish['name'] }}</p>
                                     <p class="text-sm text-neutral-500">{{ $dish['category'] }}</p>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-semibold">{{ $dish['orders'] }} Orders</p>
-                                    <p class="text-sm text-emerald-600">↑ {{ $dish['delta'] }}%</p>
                                 </div>
                             </div>
-                        @endforeach
+                        @empty
+                            <p class="text-sm text-neutral-400 text-center py-6">Belum ada penjualan hari ini.</p>
+                        @endforelse
                     </div>
                 </div>
 
                 <div class="bg-white rounded-2xl border border-neutral-100 shadow-sm p-6">
                     <div class="flex items-center justify-between">
                         <h2 class="text-xl font-extrabold">Recent Orders</h2>
-                        <a href="#" class="text-sm font-semibold text-[#d9603b]">View All</a>
+                        <a href="{{ route('admin.reports.items') }}" class="text-sm font-semibold text-[#d9603b]">View All</a>
                     </div>
 
                     <div class="mt-5 overflow-x-auto">
@@ -277,7 +271,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($recentOrders as $order)
+                                @forelse ($recentOrders as $order)
                                     <tr class="border-b border-neutral-50 last:border-0">
                                         <td class="py-3.5 font-semibold">{{ $order['id'] }}</td>
                                         <td class="py-3.5 text-neutral-600">{{ $order['table'] }}</td>
@@ -288,7 +282,11 @@
                                             </span>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="4" class="py-8 text-center text-neutral-400">Belum ada order yang dibayar.</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -298,6 +296,46 @@
         </main>
     </div>
 </div>
+
+<script>
+    const revenueLabels = @json($weeklyRevenue->pluck('label'));
+    const revenueValues = @json($weeklyRevenue->pluck('value'));
+
+    const ctx = document.getElementById('revenueTrendChart');
+    const gradient = ctx.getContext('2d').createLinearGradient(0, 0, 0, 280);
+    gradient.addColorStop(0, 'rgba(221, 107, 74, 0.35)');
+    gradient.addColorStop(1, 'rgba(221, 107, 74, 0)');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: revenueLabels,
+            datasets: [{
+                data: revenueValues,
+                borderColor: '#c0451f',
+                backgroundColor: gradient,
+                fill: true,
+                tension: 0.35,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#c0451f',
+                pointBorderWidth: 3,
+                pointRadius: 5,
+            }],
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: (c) => '$' + c.parsed.y.toLocaleString() } },
+            },
+            scales: {
+                y: { beginAtZero: true, ticks: { callback: (v) => '$' + (v >= 1000 ? (v / 1000) + 'k' : v) }, grid: { color: '#f1e7e2' } },
+                x: { grid: { display: false } },
+            },
+        },
+    });
+</script>
 
 </body>
 </html>
