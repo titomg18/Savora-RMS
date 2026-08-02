@@ -100,8 +100,9 @@ class User extends Authenticatable
             'cashier' => route('admin.payments.index'),
             // Waiter langsung diarahkan ke halaman kerja utamanya (ambil pesanan), bukan dashboard kosong.
             'waiter'  => route('admin.orders.index'),
-            'chef'    => route('chef.dashboard'),
+            // Koki langsung diarahkan ke Kitchen Display (KDS), bukan dashboard kosong.
+            'chef'    => route('admin.kitchen.index'),
             default   => route('login'),
         };
     }
-}   
+}

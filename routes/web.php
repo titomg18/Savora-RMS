@@ -27,10 +27,6 @@ Route::middleware(['auth'])->group(function () {
         return view('admin.dashboard');
     })->middleware('role:admin,owner')->name('admin.dashboard');
 
-    Route::get('/chef/dashboard', function () {
-        return view('chef.dashboard');
-    })->middleware('role:chef')->name('chef.dashboard');
-
     Route::get('/dashboard', function () {
         return redirect()->to(auth()->user()->getDashboardRoute());
     })->name('dashboard');
