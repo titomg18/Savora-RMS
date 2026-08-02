@@ -31,10 +31,6 @@ Route::middleware(['auth'])->group(function () {
         return view('cashier.dashboard');
     })->middleware('role:cashier')->name('cashier.dashboard');
 
-    Route::get('/waiter/dashboard', function () {
-        return view('waiter.dashboard');
-    })->middleware('role:waiter')->name('waiter.dashboard');
-
     Route::get('/chef/dashboard', function () {
         return view('chef.dashboard');
     })->middleware('role:chef')->name('chef.dashboard');
@@ -53,13 +49,19 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('users', UserController::class)->only(['index', 'store', 'update', 'destroy']);
     });
 
+    // ==== Tables & Orders — admin, owner, DAN waiter ====
+    // Sama seperti Kitchen/Payments: akses role diatur lewat middleware() masing-masing controller,
+    // bukan di sini, karena beda action (mis. store/destroy meja) butuh role berbeda dari index/update.
+    Route::prefix('admin')->name('admin.')->group(function () {
+        Route::resource('tables', TableController::class)->only(['index', 'store', 'update', 'destroy']);
+        Route::resource('orders', OrderController::class)->only(['index', 'store']);
+    });
+
     Route::prefix('admin')->name('admin.')->middleware('role:admin,owner')->group(function () {
         Route::resource('categories', CategoryController::class)->only(['index', 'store', 'update', 'destroy']);
         Route::resource('menu', MenuController::class)
             ->parameters(['menu' => 'menuItem'])
             ->only(['index', 'store', 'update', 'destroy']);
-        Route::resource('tables', TableController::class)->only(['index', 'store', 'update', 'destroy']);
-        Route::resource('orders', OrderController::class)->only(['index', 'store']);
         Route::resource('inventory', InventoryController::class)
             ->parameters(['inventory' => 'inventoryItem'])
             ->only(['index', 'store', 'update', 'destroy']);

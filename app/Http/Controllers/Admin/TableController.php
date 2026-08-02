@@ -17,7 +17,10 @@ class TableController extends Controller implements HasMiddleware
     {
         return [
             'auth',
-            new Middleware('role:admin,owner'),
+            // Waiter boleh lihat status meja & update (occupied/available/reserved) buat seating tamu,
+            // tapi nambah/hapus meja fisik (layout) tetap khusus admin & owner.
+            new Middleware('role:admin,owner,waiter'),
+            new Middleware('role:admin,owner', only: ['store', 'destroy']),
         ];
     }
 

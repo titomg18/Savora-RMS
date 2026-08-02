@@ -12,19 +12,21 @@
 @php
     use Illuminate\Support\Facades\Route;
 
+    // Role mana saja yang boleh LIHAT tiap menu di sidebar. Ini cuma soal tampilan —
+    // proteksi sesungguhnya tetap di middleware masing-masing route/controller;
+    // daftar ini cuma disamakan manual biar gak ada menu yang kelihatan tapi ternyata 403.
     $navItems = [
-        ['label' => 'Dashboard',  'route' => 'dashboard',              'active_pattern' => ['dashboard', 'admin.dashboard']],
-        ['label' => 'Orders',     'route' => 'admin.orders.index',     'active_pattern' => 'admin.orders.*'],
-        ['label' => 'Menu',       'route' => 'admin.menu.index',       'active_pattern' => 'admin.menu.*'],
-        ['label' => 'Categories', 'route' => 'admin.categories.index', 'active_pattern' => 'admin.categories.*'],
-        ['label' => 'Tables',     'route' => 'admin.tables.index',     'active_pattern' => 'admin.tables.*'],
-        ['label' => 'Kitchen',    'route' => 'admin.kitchen.index',    'active_pattern' => 'admin.kitchen.*'],
-        ['label' => 'Payments',   'route' => 'admin.payments.index',   'active_pattern' => 'admin.payments.*'],
-        ['label' => 'Inventory',  'route' => 'admin.inventory.index',  'active_pattern' => 'admin.inventory.*'],
-        ['label' => 'Reports',    'route' => 'admin.reports.index',    'active_pattern' => 'admin.reports.*'],
-        // Sengaja cuma kelihatan buat role 'admin' — Owner dkk gak dikasih akses kelola akun staff.
-        ['label' => 'Users',      'route' => 'admin.users.index',      'active_pattern' => 'admin.users.*', 'visible' => auth()->user()?->canManageUsers() ?? false],
-        ['label' => 'Settings',   'route' => 'admin.settings.edit',    'active_pattern' => 'admin.settings.*'],
+        ['label' => 'Dashboard',  'route' => 'dashboard',              'active_pattern' => ['dashboard', 'admin.dashboard'], 'roles' => ['admin', 'owner', 'cashier', 'waiter', 'chef']],
+        ['label' => 'Orders',     'route' => 'admin.orders.index',     'active_pattern' => 'admin.orders.*',     'roles' => ['admin', 'owner', 'waiter']],
+        ['label' => 'Menu',       'route' => 'admin.menu.index',       'active_pattern' => 'admin.menu.*',       'roles' => ['admin', 'owner']],
+        ['label' => 'Categories', 'route' => 'admin.categories.index', 'active_pattern' => 'admin.categories.*', 'roles' => ['admin', 'owner']],
+        ['label' => 'Tables',     'route' => 'admin.tables.index',     'active_pattern' => 'admin.tables.*',     'roles' => ['admin', 'owner', 'waiter']],
+        ['label' => 'Kitchen',    'route' => 'admin.kitchen.index',    'active_pattern' => 'admin.kitchen.*',    'roles' => ['admin', 'owner', 'chef']],
+        ['label' => 'Payments',   'route' => 'admin.payments.index',   'active_pattern' => 'admin.payments.*',   'roles' => ['admin', 'owner', 'cashier']],
+        ['label' => 'Inventory',  'route' => 'admin.inventory.index',  'active_pattern' => 'admin.inventory.*',  'roles' => ['admin', 'owner']],
+        ['label' => 'Reports',    'route' => 'admin.reports.index',    'active_pattern' => 'admin.reports.*',    'roles' => ['admin', 'owner']],
+        ['label' => 'Users',      'route' => 'admin.users.index',      'active_pattern' => 'admin.users.*',      'roles' => ['admin']],
+        ['label' => 'Settings',   'route' => 'admin.settings.edit',    'active_pattern' => 'admin.settings.*',   'roles' => ['admin', 'owner']],
     ];
 @endphp
 
@@ -39,7 +41,7 @@
 
     <nav class="mt-8 flex-1 space-y-1">
         @foreach ($navItems as $item)
-            @continue(! ($item['visible'] ?? true))
+            @continue(! in_array(auth()->user()?->role, $item['roles'] ?? [], true))
             @php
                 $url = Route::has($item['route']) ? route($item['route']) : '#';
                 $isActive = request()->routeIs($item['active_pattern']);

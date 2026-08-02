@@ -8,6 +8,7 @@ use App\Models\DiningTable;
 use App\Models\MenuItem;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Setting;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -18,13 +19,11 @@ use Illuminate\View\View;
 
 class OrderController extends Controller implements HasMiddleware
 {
-    private const TAX_RATE = 0.085; // 8.5%
-
     public static function middleware(): array
     {
         return [
             'auth',
-            new Middleware('role:admin,owner'),
+            new Middleware('role:admin,owner,waiter'),
         ];
     }
 
@@ -78,7 +77,8 @@ class OrderController extends Controller implements HasMiddleware
                 ];
             }
 
-            $tax = round($subtotal * self::TAX_RATE, 2);
+            $taxRate = (float) Setting::current()->tax_rate / 100; // mis. 8.5 -> 0.085
+            $tax = round($subtotal * $taxRate, 2);
             $total = $subtotal + $tax;
 
             $order = Order::create([

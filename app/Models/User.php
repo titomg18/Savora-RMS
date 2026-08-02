@@ -97,7 +97,8 @@ class User extends Authenticatable
             // Owner pakai tampilan & akses yang SAMA PERSIS dengan Admin — gak ada view/folder terpisah.
             'admin', 'owner' => route('admin.dashboard'),
             'cashier' => route('cashier.dashboard'),
-            'waiter'  => route('waiter.dashboard'),
+            // Waiter langsung diarahkan ke halaman kerja utamanya (ambil pesanan), bukan dashboard kosong.
+            'waiter'  => route('admin.orders.index'),
             'chef'    => route('chef.dashboard'),
             default   => route('login'),
         };
