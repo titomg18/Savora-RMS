@@ -27,11 +27,11 @@
 
 <div class="min-h-screen flex">
 
-    @include('admin.partials.sidebar')
+    @include('Landing.partials.sidebar')
 
     <div class="flex-1 min-w-0">
 
-        @include('admin.partials.navbar', [
+        @include('Landing.partials.navbar', [
             'pageTitle' => 'Users',
             'pageSubtitle' => 'Kelola akun admin, owner, cashier, waiter, dan chef restoran kamu.',
         ])

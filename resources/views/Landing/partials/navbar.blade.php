@@ -1,7 +1,7 @@
 {{--
     Navbar / header partial.
     Kirim $pageTitle dan $pageSubtitle dari view pemanggil kalau mau judul beda-beda per halaman, misalnya:
-    @include('admin.partials.navbar', ['pageTitle' => 'Orders', 'pageSubtitle' => 'Kelola semua pesanan di sini.'])
+    @include('Landing.partials.navbar', ['pageTitle' => 'Orders', 'pageSubtitle' => 'Kelola semua pesanan di sini.'])
 --}}
 @php
     $pageTitle    = $pageTitle    ?? 'Overview';

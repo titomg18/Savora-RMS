@@ -49,7 +49,7 @@ class UserController extends Controller implements HasMiddleware
             ->paginate(10)
             ->withQueryString();
 
-        return view('Admin.user', compact('users', 'search'));
+        return view('Landing.user', compact('users', 'search'));
     }
 
     public function store(Request $request): RedirectResponse

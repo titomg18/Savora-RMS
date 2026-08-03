@@ -38,7 +38,7 @@ class TableController extends Controller implements HasMiddleware
             ->orderBy('number')
             ->get();
 
-        return view('Admin.tables', compact('tables', 'area'));
+        return view('Landing.tables', compact('tables', 'area'));
     }
 
     public function store(Request $request): RedirectResponse

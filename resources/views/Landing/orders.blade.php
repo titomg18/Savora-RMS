@@ -38,7 +38,7 @@
 >
 
     {{-- ===================== SIDEBAR ===================== --}}
-    @include('admin.partials.sidebar')
+    @include('Landing.partials.sidebar')
 
     {{-- ===================== BUILDER (search/filter/menu grid) ===================== --}}
     <div class="flex-1 min-w-0 flex flex-col">

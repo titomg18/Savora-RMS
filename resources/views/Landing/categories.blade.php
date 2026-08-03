@@ -16,7 +16,7 @@
 <div class="min-h-screen flex">
 
     {{-- ===================== SIDEBAR ===================== --}}
-    @include('admin.partials.sidebar')
+    @include('Landing.partials.sidebar')
 
     {{-- ===================== MAIN ===================== --}}
     <div class="flex-1 min-w-0">

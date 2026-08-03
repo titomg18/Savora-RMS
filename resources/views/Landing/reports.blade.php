@@ -24,7 +24,7 @@
 <div class="min-h-screen flex">
 
     {{-- ===================== SIDEBAR ===================== --}}
-    @include('admin.partials.sidebar')
+    @include('Landing.partials.sidebar')
 
     {{-- ===================== MAIN ===================== --}}
     <div class="flex-1 min-w-0">
@@ -128,7 +128,7 @@
                     </div>
                     <p class="mt-3 text-3xl font-extrabold">${{ number_format($revenue, 0) }}</p>
                     <p class="mt-1.5 text-sm flex items-center gap-1 {{ $revenueChange['direction'] === 'down' ? 'text-red-500' : 'text-teal-600' }}">
-                        @include('Admin.partials.trend-arrow', ['direction' => $revenueChange['direction']])
+                        @include('Landing.partials.trend-arrow', ['direction' => $revenueChange['direction']])
                         {{ $revenueChange['percent'] }}% <span class="text-neutral-400">vs last period</span>
                     </p>
                 </div>
@@ -146,7 +146,7 @@
                     </div>
                     <p class="mt-3 text-3xl font-extrabold">{{ number_format($transactions) }}</p>
                     <p class="mt-1.5 text-sm flex items-center gap-1 {{ $transactionsChange['direction'] === 'down' ? 'text-red-500' : 'text-teal-600' }}">
-                        @include('Admin.partials.trend-arrow', ['direction' => $transactionsChange['direction']])
+                        @include('Landing.partials.trend-arrow', ['direction' => $transactionsChange['direction']])
                         {{ $transactionsChange['percent'] }}% <span class="text-neutral-400">vs last period</span>
                     </p>
                 </div>
@@ -164,7 +164,7 @@
                     </div>
                     <p class="mt-3 text-3xl font-extrabold">${{ number_format($avgOrderValue, 2) }}</p>
                     <p class="mt-1.5 text-sm flex items-center gap-1 {{ $avgOrderValueChange['direction'] === 'down' ? 'text-red-500' : 'text-teal-600' }}">
-                        @include('Admin.partials.trend-arrow', ['direction' => $avgOrderValueChange['direction']])
+                        @include('Landing.partials.trend-arrow', ['direction' => $avgOrderValueChange['direction']])
                         {{ $avgOrderValueChange['percent'] }}% <span class="text-neutral-400">vs last period</span>
                     </p>
                 </div>
@@ -261,7 +261,7 @@
                                                 'down' => 'bg-red-50 text-red-600',
                                                 default => 'bg-neutral-100 text-neutral-500',
                                             } }}">
-                                            @include('Admin.partials.trend-arrow', ['direction' => $row['trend_direction']])
+                                            @include('Landing.partials.trend-arrow', ['direction' => $row['trend_direction']])
                                             {{ $row['trend_percent'] }}%
                                         </span>
                                     </td>

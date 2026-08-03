@@ -58,7 +58,7 @@ class PaymentController extends Controller implements HasMiddleware
             $order->load(['table', 'items']);
         }
 
-        return view('Admin.payments', compact('order', 'unpaidOrders', 'search'));
+        return view('Landing.payments', compact('order', 'unpaidOrders', 'search'));
     }
 
     public function applyPromo(Request $request, Order $order): RedirectResponse

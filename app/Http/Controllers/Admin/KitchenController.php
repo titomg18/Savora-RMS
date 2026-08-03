@@ -46,7 +46,7 @@ class KitchenController extends Controller implements HasMiddleware
                 ->count();
         }
 
-        return view('Admin.kitchen', compact('orders', 'station', 'stationCounts'));
+        return view('Landing.kitchen', compact('orders', 'station', 'stationCounts'));
     }
 
     /**

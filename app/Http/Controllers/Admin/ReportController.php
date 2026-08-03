@@ -80,7 +80,7 @@ class ReportController extends Controller implements HasMiddleware
         // Best selling menu items (top 5) + trend vs periode sebelumnya.
         $bestSellers = $this->bestSellingItems($start, $end, $prevStart, $prevEnd, 5);
 
-        return view('Admin.reports', [
+        return view('Landing.reports', [
             'start' => $start,
             'end' => $end,
             'granularity' => $granularity,
@@ -108,7 +108,7 @@ class ReportController extends Controller implements HasMiddleware
 
         $bestSellers = $this->bestSellingItems($start, $end, $prevStart, $prevEnd, 50);
 
-        return view('Admin.report-items', [
+        return view('Landing.report-items', [
             'start' => $start,
             'end' => $end,
             'bestSellers' => $bestSellers,

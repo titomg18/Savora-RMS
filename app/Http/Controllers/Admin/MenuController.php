@@ -40,7 +40,7 @@ class MenuController extends Controller implements HasMiddleware
 
         $categories = Category::query()->orderBy('name')->get();
 
-        return view('Admin.menu', compact('menuItems', 'categories', 'search', 'categoryId', 'status'));
+        return view('Landing.menu', compact('menuItems', 'categories', 'search', 'categoryId', 'status'));
     }
 
     public function store(Request $request): RedirectResponse

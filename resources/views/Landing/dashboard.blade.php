@@ -17,7 +17,7 @@
 {{--
     Data di bawah ini contoh (dummy) supaya halaman bisa langsung dilihat.
     Di project asli, ganti dengan data dari Controller, misalnya:
-    return view('admin.dashboard', compact('revenueToday', 'todaysOrders', ...));
+    return view('Landing.dashboard', compact('revenueToday', 'todaysOrders', ...));
 --}}
 @php
     $revenueToday   = $revenueToday   ?? 4289.00;
@@ -62,13 +62,11 @@
 <div class="min-h-screen flex">
 
     {{-- ===================== SIDEBAR ===================== --}}
-    @include('admin.partials.sidebar')
+    @include('Landing.partials.sidebar')
 
-    {{-- ===================== MAIN ===================== --}}
-    <div class="flex-1 min-w-0">
-
-        {{-- Header --}}
-        @include('admin.partials.navbar', [
+    {{-- MAIN CONTENT --}}
+    <div class="flex-1 flex flex-col min-w-0">
+        @include('Landing.partials.navbar', [
             'pageTitle' => 'Overview',
             'pageSubtitle' => "Welcome back, " . (auth()->user()->name ?? 'Admin') . ". Here's what's happening today.",
         ])

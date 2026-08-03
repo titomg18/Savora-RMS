@@ -114,7 +114,7 @@ class DashboardController extends Controller implements HasMiddleware
                 'status' => 'Paid',
             ]);
 
-        return view('Admin.dashboard', [
+        return view('Landing.dashboard', [
             'revenueToday' => $revenueToday,
             'revenueDelta' => $revenueDelta,
             'todaysOrders' => $todaysOrders,

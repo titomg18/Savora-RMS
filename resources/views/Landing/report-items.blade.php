@@ -14,7 +14,7 @@
 <body class="bg-[#fdf2ee] text-neutral-900">
 
 <div class="min-h-screen flex">
-    @include('admin.partials.sidebar')
+    @include('Landing.partials.sidebar')
 
     <div class="flex-1 min-w-0">
         <main class="px-6 lg:px-10 py-8">
@@ -58,7 +58,7 @@
                                             'down' => 'bg-red-50 text-red-600',
                                             default => 'bg-neutral-100 text-neutral-500',
                                         } }}">
-                                        @include('Admin.partials.trend-arrow', ['direction' => $row['trend_direction']])
+                                        @include('Landing.partials.trend-arrow', ['direction' => $row['trend_direction']])
                                         {{ $row['trend_percent'] }}%
                                     </span>
                                 </td>

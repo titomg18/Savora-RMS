@@ -59,7 +59,7 @@ class InventoryController extends Controller implements HasMiddleware
             'pending_deliveries' => InventoryDelivery::query()->where('status', 'pending')->count(),
         ];
 
-        return view('Admin.inventory', [
+        return view('Landing.inventory', [
             'items' => $paginatedItems,
             'categories' => $categories,
             'search' => $search,

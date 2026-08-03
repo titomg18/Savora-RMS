@@ -28,7 +28,7 @@ class SettingController extends Controller implements HasMiddleware
         $tab = $request->query('tab', 'restaurant');
         $setting = Setting::current();
 
-        return view('Admin.settings', compact('tab', 'setting'));
+        return view('Landing.settings', compact('tab', 'setting'));
     }
 
     public function updateRestaurant(Request $request): RedirectResponse

@@ -26,7 +26,7 @@ class CategoryController extends Controller implements HasMiddleware
     {
         $categories = Category::query()->orderBy('name')->get();
 
-        return view('Admin.categories', compact('categories'));
+        return view('Landing.categories', compact('categories'));
     }
 
     public function store(Request $request): RedirectResponse

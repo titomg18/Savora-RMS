@@ -41,7 +41,7 @@ class OrderController extends Controller implements HasMiddleware
             ->orderBy('number')
             ->get();
 
-        return view('Admin.orders', compact('categories', 'menuItems', 'tables'));
+        return view('Landing.orders', compact('categories', 'menuItems', 'tables'));
     }
 
     /**
